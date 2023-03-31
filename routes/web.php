@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SubscriberController;
+use App\Http\Controllers\ApiIntegrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::resource('subscribers', SubscriberController::class)->except(['show']);
+Route::get('api-integration', [ApiIntegrationController::class, 'show'])->name('integration.show');
+Route::post('api-integration', [ApiIntegrationController::class, 'apiValidate'])->name('integration.validate');
+
+Route::redirect('/', route('subscribers.create'));
