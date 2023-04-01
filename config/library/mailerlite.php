@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'api_key' => '', // For now this is not used, because of thre requiremnt is save the api key in DB
+    'api_key' => '', // For now this is not used, because of the requirement is saving the api key in DB
     'base_uri' => 'https://api.mailerlite.com/api/',
     'version' => 'v2',
     'api_key_name' => 'X-MailerLite-ApiKey',
