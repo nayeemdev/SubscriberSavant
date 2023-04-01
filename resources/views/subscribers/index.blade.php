@@ -75,5 +75,26 @@
                 subscribersDatatable.api().columns(i).search(v).draw();
             }, 1500);
         });
+
+        $(document).on('click', '.delete', function (e) {
+            e.preventDefault();
+            let btn = $(this);
+            btn.text('Deleting...').attr('disabled', true);
+            let subscriberId = $(this).data('subscriber_id');
+
+            $.ajax({
+                url: '/subscribers/' + subscriberId,
+                type: 'DELETE',
+                success: function (response) {
+                    if (response.success === true) {
+                        subscribersDatatable.api().ajax.reload();
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                    btn.text('Delete').attr('disabled', false);
+                }
+            });
+        });
     </script>
 @endpush
