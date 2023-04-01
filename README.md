@@ -36,8 +36,14 @@ In order to run the tests, you need to run the following command:
 `php artisan test`
 
 There are 2 tests file for Subscriber API and Integration. Subscriber API is unit test and other is feature test.
+![TestCase](https://user-images.githubusercontent.com/40033062/229319968-e4c60d1f-8550-4b8b-8e52-ddbcdcfa2d3c.png)
+
 
 ## Screenshots
+![List of Subscribers](https://user-images.githubusercontent.com/40033062/229320021-76c552cd-7fb3-4d64-a4bf-5e6a08f757f0.png)
+![Api Integration](https://user-images.githubusercontent.com/40033062/229320012-3729edd2-4681-4de3-af0b-cfadbb2851fa.png)
+![Create Subscriber](https://user-images.githubusercontent.com/40033062/229320008-7b7f8bd0-7da4-4e89-863e-06ad6148a884.png)
+![Subscriber Edit](https://user-images.githubusercontent.com/40033062/229320017-a3e9ec20-345e-477c-b321-7ee18f57bb48.png)
 
 
 
