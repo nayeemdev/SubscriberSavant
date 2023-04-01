@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApiIntegrationRequest;
+use App\Services\SubscriberService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ApiIntegrationController extends Controller
@@ -22,11 +23,17 @@ class ApiIntegrationController extends Controller
     /**
      * Validate the API key.
      *
-     * @param  Request  $request
+     * @param  ApiIntegrationRequest  $request
      * @return RedirectResponse
      */
-    public function apiValidate(Request $request): RedirectResponse
+    public function apiValidate(ApiIntegrationRequest $request): RedirectResponse
     {
-        return back()->with('success', 'API key is valid and ready to use.');
+        $subscriberService = new SubscriberService($request->api_key);
+
+        if ($subscriberService->validateApiKey()) {
+            return back()->with('success', 'Key is valid and ready to use. You can now subscribe to the newsletter.');
+        }
+
+        return back()->with('error', 'API key is not valid.');
     }
 }

@@ -12,10 +12,11 @@
                     <div class="card-body bg-light p-5">
                         <div class="d-flex justify-content-between">
                             <h3>Subscribers</h3>
-                            <a href="{{ route('subscribers.create') }}" class="btn btn-success bg-mailerlite border-0 py-2">Add subscriber</a>
+                            <a href="{{ route('subscribers.create') }}"
+                               class="btn btn-success bg-mailerlite border-0 py-2">Add subscriber</a>
                         </div>
                         <div class="mt-3 table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-hover" id="subscriber-table">
                                 <thead>
                                   <tr>
                                     <th scope="col">Name</th>
@@ -26,21 +27,6 @@
                                     <th scope="col">Action</th>
                                   </tr>
                                 </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>Mark</td>
-                                    <td>
-                                        <a href="/edit" class="text-decoration-none">mail12@f.co</a>
-                                    </td>
-                                    <td>Bangladesh</td>
-                                    <td>2021-09-01</td>
-                                    <td>12:00:00</td>
-                                    <td>
-                                        <a href="/edit" class="btn btn-sm btn-success bg-mailerlite border-0 py-1">Edit</a>
-                                        <a href="/delete" class="btn btn-sm btn-danger border-0 py-1">Delete</a>
-                                    </td>
-                                    </tr>
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -53,8 +39,41 @@
 @push('scripts')
     <script src="{{ asset('assets/library/datatables/dataTables.js') }}"></script>
     <script>
-        $(document).ready( function () {
-            $('.table').DataTable();
-        } );
+        let subscribersDatatable = $ ('#subscriber-table').dataTable ({
+            "ordering": false,
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{ route('subscribers.json') }}",
+                "dataType": "json",
+                "type": "GET"
+            },
+            "columns": [
+                {"data": "name"},
+                {"data": "email"},
+                {"data": "country"},
+                {"data": "subscribe_date"},
+                {"data": "subscribe_time"},
+                {"data": "actions"},
+            ],
+            "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
+            stateSave: false,
+            "language": {
+                "infoEmpty": "No subscribers available",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "search": "Search:",
+                "searchPlaceholder": "Email...",
+            },
+        });
+
+        $ ('.data-table-search-input-text').on ('keyup change', function () {
+            let inputElement = $ (this);
+
+            setTimeout (function () {
+                let i = inputElement.attr('data-column');
+                let v = inputElement.val();
+                subscribersDatatable.api().columns(i).search(v).draw();
+            }, 1500);
+        });
     </script>
 @endpush
