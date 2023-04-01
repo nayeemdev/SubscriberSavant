@@ -27,6 +27,8 @@ class SubscriptionControllerTest extends TestCase
 
     public function test_subscription_wont_work_without_api_key()
     {
+        ApiKey::where('name', 'mailerlite')->delete();
+
         $response = $this->get('/subscribers');
         $response->assertStatus(302);
         $response->assertSessionHas('error');
@@ -205,9 +207,9 @@ class SubscriptionControllerTest extends TestCase
 
         $response = $this->delete(route('subscribers.destroy', $subscriber_id));
 
-        $response->assertStatus(302);
-        $response->assertSessionHas('success');
-        $this->assertEquals('Subscriber deleted successfully.', $response->getSession()->get('success'));
+        $response->assertStatus(200);
+        $response->assertJson(['success' => true, 'message' => 'Subscriber deleted successfully.']);
+        $response->assertJsonStructure(['success', 'message']);
         $this->assertDatabaseMissing('subscribers', [
             'email' => $data['email']
         ]);
