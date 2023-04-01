@@ -5,6 +5,7 @@ namespace App\Library\Mailerlite;
 use App\Library\Mailerlite\API\Authentication;
 use App\Library\Mailerlite\API\Subscribers;
 use App\Library\Mailerlite\Clients\HttpClient;
+use GuzzleHttp\Client;
 
 class Mailerlite
 {
@@ -12,13 +13,17 @@ class Mailerlite
     protected $apiKey;
     protected $baseUri;
 
-    public function __construct(string $apiKey)
+    public function __construct(string $apiKey, Client $httpClient = null)
     {
         $this->apiKey = $apiKey;
         $uri = config('library.mailerlite.base_uri');
         $version = config('library.mailerlite.version');
         $this->baseUri = $uri . $version . '/';
-        $this->client = new HttpClient($this->baseUri, $this->apiKey);
+        $this->client = new HttpClient(
+            $this->baseUri,
+            $this->apiKey,
+            $httpClient ?? new Client()
+        );
     }
 
     /**

@@ -13,11 +13,11 @@ class HttpClient implements ClientInterface
     public $baseUri;
     public $apiKey;
 
-    public function __construct($baseUri, $apiKey)
+    public function __construct($baseUri, $apiKey, Client $client = null)
     {
         $this->baseUri = $baseUri;
         $this->apiKey = $apiKey;
-        $this->client = new Client();
+        $this->client = $client ?? new Client();
     }
 
     /**
