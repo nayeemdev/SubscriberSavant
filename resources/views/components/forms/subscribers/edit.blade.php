@@ -19,7 +19,7 @@
             <select name="country" id="country" class="form-control form-select @error('country') is-invalid @enderror">
                 @foreach($countries as $country)
                     <option
-{{--                            {{ old('country', $subscriber->$country) == $country['name'] ? 'selected' : ''}}--}}
+                            {{ old('country', $subscriber->country) == $country['name'] ? 'selected' : ''}}
                             value="{{ $country['name'] }}">{{ $country['name'] }}
                     </option>
                 @endforeach
@@ -29,7 +29,7 @@
             @enderror
         </div>
         <div class="form-group text-center">
-            <button type="submit" class="btn btn-primary bg-mailerlite border-0 mt-2">Subscribe</button>
+            <button type="submit" class="btn btn-primary bg-mailerlite border-0 mt-2">Update</button>
         </div>
     </div>
 </form>
