@@ -15,8 +15,13 @@ use App\Http\Controllers\ApiIntegrationController;
 |
 */
 
-Route::resource('subscribers', SubscriberController::class)->except(['show']);
+Route::middleware('validate.apikey')->group(function () {
+    Route::resource('subscribers', SubscriberController::class)->except(['show']);
+    Route::get('subscribers/json', [SubscriberController::class, 'json'])->name('subscribers.json');
+
+    Route::redirect('/', route('subscribers.create'));
+});
+
 Route::get('api-integration', [ApiIntegrationController::class, 'show'])->name('integration.show');
 Route::post('api-integration', [ApiIntegrationController::class, 'apiValidate'])->name('integration.validate');
 
-Route::redirect('/', route('subscribers.create'));
