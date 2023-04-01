@@ -13,7 +13,7 @@ class Mailerlite
     protected $apiKey;
     protected $baseUri;
 
-    public function __construct(string $apiKey, Client $httpClient = null)
+    public function __construct(string $apiKey = null, Client $httpClient = null)
     {
         $this->apiKey = $apiKey;
         $uri = config('library.mailerlite.base_uri');
