@@ -165,7 +165,6 @@ class SubscriberService
         if (!empty($subscribers)) {
             foreach ($subscribers as $subscriber) {
                 $editRoute = route('subscribers.edit', $subscriber->id);
-                $deleteRoute = route('subscribers.destroy', $subscriber->id);
                 $subscribedDate = new Carbon($subscriber->date_subscribe);
 
                 $subs['name'] = $subscriber->name;
@@ -176,10 +175,10 @@ class SubscriberService
                 $subs['subscribe_date'] = $subscribedDate->format('d/m/Y');
                 $subs['subscribe_time'] = $subscribedDate->format('H:i:s');
                 $subs['actions'] = '
-                        <form action="'.$deleteRoute.'" method="POST" class="d-inline-block">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn btn-sm btn-danger border-0 py-2">Delete</button>
-                        </form>
+                        <button data-subscriber_id="'.$subscriber->id.'"
+                            class="btn btn-sm btn-danger delete">
+                            Delete
+                        </button>
                 ';
                 $data[] = $subs;
             }

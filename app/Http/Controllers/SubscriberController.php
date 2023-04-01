@@ -6,6 +6,7 @@ use App\Http\Requests\CreateSubscriberRequest;
 use App\Http\Requests\UpdateSubscriberRequest;
 use App\Services\SubscriberService;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -110,20 +111,29 @@ class SubscriberController extends Controller
      * Remove the specified resource from storage.
      *
      * @param string $subscriberId
-     * @return RedirectResponse
+     * @return JsonResponse
      */
-    public function destroy(string $subscriberId): RedirectResponse
+    public function destroy(string $subscriberId): JsonResponse
     {
         try {
             $this->subscriberService->unsubscribe($subscriberId);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('subscribers.index')->with('error', 'Something went wrong.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.'
+            ]);
         } catch (GuzzleException $e) {
-            return redirect()->route('subscribers.index')->with('error', $this->handleGuzzleException($e));
+            return response()->json([
+                'success' => false,
+                'message' => $this->handleGuzzleException($e)
+            ]);
         }
 
-        return redirect()->route('subscribers.index')->with('success', 'Subscriber deleted successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Subscriber deleted successfully.'
+        ]);
     }
 
     /**
