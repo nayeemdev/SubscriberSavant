@@ -15,6 +15,8 @@ class SubscriberController extends Controller
 {
     private $subscriberService;
 
+    const ERROR_MESSAGE = 'Something went wrong.';
+
     public function __construct()
     {
         $this->subscriberService = new SubscriberService(getApiKey('mailerlite'));
@@ -57,7 +59,7 @@ class SubscriberController extends Controller
             return back()->with('success', 'Subscriber created successfully.');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return back()->with('error', 'Something went wrong.');
+            return back()->with('error', static::ERROR_MESSAGE);
         } catch (GuzzleException $e) {
             return back()->with('error', $this->handleGuzzleException($e));
         }
@@ -79,7 +81,7 @@ class SubscriberController extends Controller
             return view('subscribers.edit', compact('subscriber', 'countries'));
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return back()->with('error', 'Something went wrong.');
+            return back()->with('error', static::ERROR_MESSAGE);
         } catch (GuzzleException $e) {
             return back()->with('error', $this->handleGuzzleException($e));
         }
@@ -98,7 +100,7 @@ class SubscriberController extends Controller
             $this->subscriberService->update($subscriberId, $request->validated());
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return back()->with('error', 'Something went wrong.');
+            return back()->with('error', static::ERROR_MESSAGE);
         } catch (GuzzleException $e) {
             return back()->with('error', $this->handleGuzzleException($e));
         }
@@ -118,7 +120,7 @@ class SubscriberController extends Controller
             $this->subscriberService->unsubscribe($subscriberId);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->route('subscribers.index')->with('error', 'Something went wrong.');
+            return redirect()->route('subscribers.index')->with('error', static::ERROR_MESSAGE);
         } catch (GuzzleException $e) {
             return redirect()->route('subscribers.index')->with('error', $this->handleGuzzleException($e));
         }
@@ -138,6 +140,7 @@ class SubscriberController extends Controller
     {
         $code = $e->getCode();
         $message = $e->getMessage();
+        Log::error($message);
 
         if ($code === 0) {
             $message = 'Connection error';
